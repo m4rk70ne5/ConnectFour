@@ -1,0 +1,98 @@
+class Player
+  - Put a Circle Token on a board square
+  - Have (or don't have) a Your-Turn token
+  - Give up the Your-Turn token (players are civilized and autonomous in this respect -- they appreciate the 
+                                 social value of "being fair" and "taking turns")
+
+class Referee
+  - Check if the next turn is valid
+  - Check if a player had won by making his last move
+  - Award points to players
+
+class Board
+  - Draw yourself to the screen
+    - Draw the squares
+    - Draw all the checkers on the squares
+  - Has a Bitmap (if applicable)
+  - Have a vector of squares
+  - Have a column cutoff value (if a grid)
+  - Can convert to a coordinate to an index, and vice-versa
+  - Can also convert a coordinate to a pixel position in the window (this and things related should be private)
+  - Resets upon Game End
+
+class Square
+  - Have a vector of pointers to token(s) object (or nothing)
+  - Bool acceptToken (does the square accept any more tokens)
+
+class Token (since there is only one type, we'll call this Checker)
+  - TokenType - Checker
+  - DrawRoutine
+  - Bitmap (if applicable -- could also be color)
+  - Owner of Type (which player owns what token)
+
+
+class GameMechanic
+  - All the inner workings of the game go here
+  - Everything in this class is public
+  - The class is a static singleton
+  - Has a YourTurn token object
+
+class YourToken
+  - Pointer to the Owner (Player parent)
+  - Has a Default Rulebook (Usually consults a Linked List of Players -- only pointers, of course)
+
+Game Features:
+   Awards points based on the number of games won by a player.
+   Whoever has the most points when the application quits is the winner
+
+
+Main:
+    Create the Players
+    Create the YourTurn Token
+       - Create the list link of players
+
+----
+TODO
+----
+
+1) Hotspot update function
+   a) On exit
+   b) On enter
+2) Implement the text block class (or something like that)
+----
+3) Finish up Referee functions
+   a) When player exits, pop up message box asking (are you sure you want to quit), 
+      followed by another message box stating who won and the score
+4) Finish static Grid functions (except coordToPix)
+===Finish Here (Saturday)===
+7) Make sure that everything is deallocated properly when Game Ends
+8) Test and Run
+===Finish Here (Next Saturday)===
+
+----------
+Pseudocode
+----------
+
+User clicks mouse:
+    Get Mouse Coordinates
+    Convert coordinates to column number
+    If column number is valid:
+        If (Referee->CheckChecker())
+            Player->DropChecker()
+            If (Referee->CheckWinner(Player))
+                 Assign new score
+                 Say Player # won!
+                 [Click to Continue]
+                 Freeze Input (except for mouse click and ESC)
+                 When mouse clicks, unfreeze
+                    Reset Board
+                    Continue Outputing normal message:  Player #'s turn to play
+         Else
+             Change Player in YT Token
+
+=====
+
+Header: 176, 64
+Score:  656, 300
+Grid:  176, 192
+Bottom: 176, 688
